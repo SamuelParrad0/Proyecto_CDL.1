@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3db44894.css",
+    "main.js": "/static/js/main.f4b07377.js",
+    "static/media/Fondo1.png": "/static/media/Fondo1.3249b7fd088b015d172a.png",
+    "static/media/FondoLogin.png": "/static/media/FondoLogin.dd0b760857e3b6fcfb9f.png",
+    "index.html": "/index.html",
+    "main.3db44894.css.map": "/static/css/main.3db44894.css.map",
+    "main.f4b07377.js.map": "/static/js/main.f4b07377.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3db44894.css",
+    "static/js/main.f4b07377.js"
+  ]
+}
