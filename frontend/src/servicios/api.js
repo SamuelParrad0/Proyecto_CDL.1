@@ -33,11 +33,37 @@ export async function loginAPI(correo, password) {
   });
   const data = await handleResponse(response);
   if (data.token && data.usuario) {
-    // Limpiar dirección del usuario anterior antes de guardar el nuevo
+    // Limpiar dirección del usuario anterior
     localStorage.removeItem('cdl_direccion');
     localStorage.removeItem('cdl_dirs_entrega');
     localStorage.setItem('token', data.token);
     localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+    // Cargar dirección guardada del nuevo usuario desde la BD
+    try {
+      const resDirs = await fetch(`${API_URL}/direcciones`, {
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${data.token}` }
+      });
+      const dataDirs = await resDirs.json();
+      const dirs = Array.isArray(dataDirs) ? dataDirs
+        : Array.isArray(dataDirs.direcciones) ? dataDirs.direcciones : [];
+      if (dirs.length > 0) {
+        const primera = dirs[0];
+        localStorage.setItem('cdl_direccion', JSON.stringify({
+          nombre:      primera.Nombre_Completo || '',
+          direccion:   primera.Direccion || '',
+          departamento: primera.Departamento || '',
+          municipio:   primera.Municipio_Localidad || '',
+          barrio:      primera.Barrio || '',
+          apto:        primera.Apart_Casa || '',
+          telefono:    primera.Telefono || '',
+          indicaciones: primera.Indicaciones || '',
+          tipo:        primera.Residencia_Laboral || 'residencial'
+        }));
+      }
+    } catch (e) {
+      console.error('Error al cargar dirección:', e);
+    }
   }
   return data;
 }
