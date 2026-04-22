@@ -456,7 +456,7 @@ export async function obtenerOpinionesAPI() {
 export async function crearOpinionAPI(datos) {
   const response = await fetch(`${API_URL}/opiniones`, {
     method: 'POST',
-    headers: getHeaders(),
+    headers: getHeaders(true),
     body: JSON.stringify(datos)
   });
   return handleResponse(response);
