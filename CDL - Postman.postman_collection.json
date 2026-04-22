@@ -1,12 +1,15 @@
 {
   "info": {
-    "name": "ARTICULACION (Full Project)",
+    "_postman_id": "f374c746-cea8-42ab-9c30-efee4c393028",
+    "name": "CDL - Postman",
     "description": "Colección completa con todos los endpoints requeridos: User, Paquetes, Catalogos, Productos, Solicitudes, Pedidos, Citas, Direcciones, Carrito, Opiniones; distribuidos por los roles ADMIN y USER.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53189736",
+    "_collection_link": "https://go.postman.co/collection/53189736-f374c746-cea8-42ab-9c30-efee4c393028?source=collection_link"
   },
   "item": [
     {
-      "name": "👑 ADMIN",
+      "name": "ADMINISTRADOR",
       "item": [
         {
           "name": "1. USER",
@@ -16,6 +19,15 @@
               "request": {
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"correo\": \"admin@cdl.com\",\n  \"password\": \"admin123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/login",
                   "host": [
@@ -26,21 +38,23 @@
                     "auth",
                     "login"
                   ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"correo\": \"admin@cdl.com\",\n  \"password\": \"admin123\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Usuarios",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -53,22 +67,23 @@
                     "auth",
                     "usuarios"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Usuario por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Usuario por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -82,18 +97,9 @@
                     "usuarios",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Usuario (Admin)",
@@ -106,6 +112,15 @@
                     "type": "text"
                   }
                 ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Admin\",\n  \"apellidos\": \"Nuevo\",\n  \"correo\": \"admin@cdl.com\",\n  \"contraseña\": \"admin123\",\n  \"celular\": \"3000000000\",\n  \"rol\": \"admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/registro-admin",
                   "host": [
@@ -116,23 +131,34 @@
                     "auth",
                     "registro-admin"
                   ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Usuario",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"Admin\",\n  \"apellidos\": \"Nuevo\",\n  \"correo\": \"admin2@cdl.com\",\n  \"password\": \"admin123\",\n  \"celular\": \"3000000000\",\n  \"rol\": \"admin\"\n}",
+                  "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellidos\": \"Martinez\",\n  \"celular\": \"3001234567\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Usuario",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/usuarios/2",
                   "host": [
@@ -144,33 +170,34 @@
                     "usuarios",
                     "2"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Asignar Rol Admin",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"Editado\",\n  \"apellidos\": \"Usuario\",\n  \"celular\": \"3009998877\"\n}",
+                  "raw": "{\n  \"nuevoRol\": \"admin\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Asignar Rol Admin",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/admin/2/rol",
                   "host": [
@@ -183,7 +210,13 @@
                     "2",
                     "rol"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar Usuario",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -194,20 +227,6 @@
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nuevoRol\": \"admin\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar Usuario",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -222,22 +241,23 @@
                     "2",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Usuario",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Usuario",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -251,17 +271,35 @@
                     "usuarios",
                     "2"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "bearer"
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -272,6 +310,16 @@
             {
               "name": "Consultar Paquetes",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -284,11 +332,22 @@
                     "paquetes"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Paquete por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -302,13 +361,33 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Paquete",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Paquete de Boda\",\n  \"descripcion\": \"Todo incluido\",\n  \"precio\": 2500000,\n  \"imagen\": \"boda.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/paquetes/admin",
                   "host": [
@@ -319,55 +398,25 @@
                     "paquetes",
                     "admin"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"Paquete de Boda\",\n  \"descripcion\": \"Todo incluido\",\n  \"precio\": 2500000,\n  \"imagen\": \"boda.jpg\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Paquete",
               "request": {
-                "method": "PUT",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/paquetes/admin/1",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "paquetes",
-                    "admin",
-                    "1"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombre\": \"Paquete de Boda Plus\",\n  \"precio\": 2800000\n}",
@@ -376,12 +425,35 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/paquetes/admin/6",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "paquetes",
+                    "admin",
+                    "6"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Activar/Desactivar Paquete",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -396,26 +468,27 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Paquete",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Paquete",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/paquetes/admin/1",
+                  "raw": "{{base_url}}/api/paquetes/admin/6",
                   "host": [
                     "{{base_url}}"
                   ],
@@ -423,20 +496,11 @@
                     "api",
                     "paquetes",
                     "admin",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "6"
                   ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -446,6 +510,16 @@
             {
               "name": "Consultar Categorias",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -458,11 +532,22 @@
                     "categorias"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Categoria por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -476,33 +561,24 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Categoria",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/categorias",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "categorias"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombre\": \"Globos Personalizados\",\n  \"descripcion\": \"Para toda ocasion\"\n}",
@@ -511,25 +587,61 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/categorias",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Categoria",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"descripcion\": \"Para toda ocasion especial\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/categorias/1",
+                  "raw": "{{base_url}}/api/categorias/5",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "categorias",
-                    "1"
+                    "5"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar Categoria",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -540,20 +652,6 @@
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"descripcion\": \"Para toda ocasion especial\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar Categoria",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -567,46 +665,38 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Categoria",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Categoria",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/categorias/1",
+                  "raw": "{{base_url}}/api/categorias/5",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "categorias",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "5"
                   ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -616,6 +706,16 @@
             {
               "name": "Consultar Productos (Todos)",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -629,22 +729,23 @@
                     "admin",
                     "todos"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Producto por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Producto por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -658,13 +759,33 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Producto",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Arreglo Floral\",\n  \"descripcion\": \"Mix de rosas\",\n  \"precio\": 85000,\n  \"categoriaId\": 1,\n  \"stock\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/productos/admin",
                   "host": [
@@ -675,33 +796,34 @@
                     "productos",
                     "admin"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Producto",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"Arreglo Floral\",\n  \"descripcion\": \"Mix de rosas\",\n  \"precio\": 85000,\n  \"categoriaId\": 1,\n  \"stock\": 10\n}",
+                  "raw": "{\n  \"precio\": 25000\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Producto",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
                   "raw": "{{base_url}}/api/productos/admin/1",
                   "host": [
@@ -713,31 +835,23 @@
                     "admin",
                     "1"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar Producto",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"precio\": 90000\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar Producto",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -752,7 +866,13 @@
                     "1",
                     "activar"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Producto",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -762,12 +882,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Producto",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -781,18 +896,9 @@
                     "admin",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -802,6 +908,16 @@
             {
               "name": "Consultar Solicitudes",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -815,22 +931,23 @@
                     "admin",
                     "todas"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Solicitud por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Solicitud por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -843,24 +960,34 @@
                     "personalizado",
                     "1"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Crear Solicitud",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Crear Solicitud",
-              "request": {
+                },
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreCompleto\": \"Admin\",\n  \"correo\": \"admin@cdl.com\",\n  \"telefono\": \"3000200\",\n  \"destinatario\": \"Cliente 2\",\n  \"descripcionIdea\": \"Caja sorpresa\",\n  \"elementosEsenciales\": \"Chocolate\",\n  \"prioridadCliente\": \"alta\",\n  \"comentariosAdicionales\": \"Urgente\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/personalizado",
                   "host": [
@@ -870,33 +997,34 @@
                     "api",
                     "personalizado"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Estado de Solicitud",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"nombreCompleto\": \"Admin\",\n  \"correo\": \"admin@cdl.com\",\n  \"telefono\": \"3000000\",\n  \"destinatario\": \"Cliente 1\",\n  \"descripcionIdea\": \"Caja sorpresa\",\n  \"elementosEsenciales\": \"Chocolate\",\n  \"prioridadCliente\": \"alta\",\n  \"comentariosAdicionales\": \"Urgente\"\n}",
+                  "raw": "{\n  \"estado\": \"aprobado\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Estado de Solicitud",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
                   "raw": "{{base_url}}/api/personalizado/admin/1/estado",
                   "host": [
@@ -909,31 +1037,23 @@
                     "1",
                     "estado"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar Solicitud",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"estado\": \"aprobado\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar Solicitud",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -947,46 +1067,38 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Solicitud",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Solicitud",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/personalizado/1",
+                  "raw": "{{base_url}}/api/personalizado/2",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "personalizado",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "2"
                   ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -996,6 +1108,16 @@
             {
               "name": "Consultar Pedidos",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1009,22 +1131,23 @@
                     "admin",
                     "todos"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Pedido por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Pedido por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1037,24 +1160,34 @@
                     "pedidos",
                     "1"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Crear Pedido",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Crear Pedido",
-              "request": {
+                },
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"direccionEnvio\": \"Calle 100\",\n  \"telefono\": \"3000000\",\n  \"notas\": \"Cuidado\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/pedidos",
                   "host": [
@@ -1064,33 +1197,34 @@
                     "api",
                     "pedidos"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Estado Pedido",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"direccionEnvio\": \"Calle 100\",\n  \"telefono\": \"3000000\",\n  \"notas\": \"Cuidado\"\n}",
+                  "raw": "{\n  \"estado\": \"enviado\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Estado Pedido",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
                   "raw": "{{base_url}}/api/pedidos/admin/1/estado",
                   "host": [
@@ -1103,31 +1237,23 @@
                     "1",
                     "estado"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar Pedido",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"estado\": \"enviado\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar Pedido",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -1141,22 +1267,23 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Pedido",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Pedido",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -1170,18 +1297,9 @@
                     "admin",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -1191,6 +1309,16 @@
             {
               "name": "Consultar Citas (Todas)",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1204,22 +1332,23 @@
                     "admin",
                     "todas"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Cita por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Cita por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1232,24 +1361,34 @@
                     "citas",
                     "1"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Crear Cita",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Crear Cita",
-              "request": {
+                },
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paqueteId\": 1,\n  \"nombreCompleto\": \"Cliente X\",\n  \"correo\": \"x@x.com\",\n  \"telefono\": \"123\",\n  \"tipoEvento\": \"Cumpleaños\",\n  \"fechaEvento\": \"2024-12-01\",\n  \"numeroInvitados\": 50,\n  \"informacionAdicional\": \"N/A\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/citas",
                   "host": [
@@ -1259,33 +1398,34 @@
                     "api",
                     "citas"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Estado Cita",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"paqueteId\": 1,\n  \"nombreCompleto\": \"Cliente X\",\n  \"correo\": \"x@x.com\",\n  \"telefono\": \"123\",\n  \"tipoEvento\": \"Cumpleaños\",\n  \"fechaEvento\": \"2024-12-01\",\n  \"numeroInvitados\": 50,\n  \"informacionAdicional\": \"N/A\"\n}",
+                  "raw": "{\n  \"estado\": \"confirmada\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Estado Cita",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
                   "raw": "{{base_url}}/api/citas/admin/1/estado",
                   "host": [
@@ -1298,31 +1438,23 @@
                     "1",
                     "estado"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar Cita",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"estado\": \"confirmada\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar Cita",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -1336,22 +1468,23 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Cita",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Cita",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -1365,18 +1498,9 @@
                     "admin",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -1386,6 +1510,16 @@
             {
               "name": "Consultar Direcciones",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1397,7 +1531,13 @@
                     "api",
                     "direcciones"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Direccion por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -1407,12 +1547,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Direccion por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1425,44 +1560,25 @@
                     "direcciones",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Direccion",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/direcciones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "direcciones"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombreCompleto\": \"Admin Dir\",\n  \"direccion\": \"Cra 5\",\n  \"departamento\": \"Cun\",\n  \"municipio\": \"Bog\",\n  \"barrio\": \"Centro\",\n  \"telefono\": \"000\",\n  \"tipo\": \"residencial\"\n}",
@@ -1471,25 +1587,23 @@
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Direccion",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/direcciones/1",
+                  "raw": "{{base_url}}/api/direcciones",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
-                    "direcciones",
-                    "1"
+                    "direcciones"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Direccion",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -1500,6 +1614,8 @@
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"barrio\": \"Norte\"\n}",
@@ -1508,12 +1624,34 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/direcciones/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "direcciones",
+                    "1"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Activar/Desactivar Direccion",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -1527,7 +1665,13 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Direccion",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -1537,12 +1681,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Direccion",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -1555,18 +1694,9 @@
                     "direcciones",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -1576,6 +1706,16 @@
             {
               "name": "Consultar Carrito",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1587,109 +1727,91 @@
                     "api",
                     "carrito"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Consultar Item Carrito por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Consultar Item Carrito por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/carrito/1",
+                  "raw": "{{base_url}}/api/carrito/5",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "carrito",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "5"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear/Agregar al Carrito",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/carrito",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "carrito"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 5\n}",
+                  "raw": "{\n  \"productoId\": 2,\n  \"cantidad\": 4\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Carrito",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/carrito/1",
+                  "raw": "{{base_url}}/api/carrito",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
-                    "carrito",
-                    "1"
+                    "carrito"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Carrito",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"cantidad\": 10\n}",
@@ -1698,12 +1820,34 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/carrito/5",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "carrito",
+                    "5"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Activar/Desactivar Carrito",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -1717,7 +1861,13 @@
                     "1",
                     "toggle"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar del Carrito",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -1727,12 +1877,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar del Carrito",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -1745,18 +1890,9 @@
                     "carrito",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -1766,6 +1902,16 @@
             {
               "name": "Consultar Opiniones",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1778,11 +1924,22 @@
                     "opiniones"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Opinion por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -1796,33 +1953,24 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Opinion",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/opiniones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "opiniones"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombre\": \"Admin\",\n  \"calificacion\": 5,\n  \"comentario\": \"Excelente\"\n}",
@@ -1831,14 +1979,44 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/opiniones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "opiniones"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Opinion",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comentario\": \"Excelente servicio\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/opiniones/1",
                   "host": [
@@ -1849,31 +2027,23 @@
                     "opiniones",
                     "1"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Activar/Desactivar (Aprobar/Ocultar)",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{admin}}",
                       "type": "string"
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"comentario\": \"Editado excelente\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Activar/Desactivar (Aprobar/Ocultar)",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -1888,7 +2058,13 @@
                     "1",
                     "estado"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Opinion",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -1898,12 +2074,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Opinion",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -1917,25 +2088,16 @@
                     "admin",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         }
       ]
     },
     {
-      "name": "👤 USER",
+      "name": "CLIENTE",
       "item": [
         {
           "name": "1. USER",
@@ -1945,6 +2107,15 @@
               "request": {
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellidos\": \"Perez\",\n  \"correo\": \"juan@cliente.com\",\n  \"contraseña\": \"cliente123\",\n  \"celular\": \"3001234567\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/registro",
                   "host": [
@@ -1955,23 +2126,24 @@
                     "auth",
                     "registro"
                   ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellidos\": \"Perez\",\n  \"correo\": \"juan@cliente.com\",\n  \"password\": \"password123\",\n  \"celular\": \"3001234567\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Login Cliente",
               "request": {
                 "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"correo\": \"juan@cliente.com\",\n  \"password\": \"cliente123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/login",
                   "host": [
@@ -1982,21 +2154,23 @@
                     "auth",
                     "login"
                   ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"correo\": \"juan@cliente.com\",\n  \"password\": \"password123\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Mi Perfil",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2009,24 +2183,34 @@
                     "auth",
                     "perfil"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Mi Perfil",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Editar Mi Perfil",
-              "request": {
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Juan Carlos\",\n  \"celular\": \"3009876543\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/auth/perfil",
                   "host": [
@@ -2037,31 +2221,23 @@
                     "auth",
                     "perfil"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Desactivar Mi Cuenta",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"Juan Carlos\",\n  \"celular\": \"3009876543\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Desactivar Mi Cuenta",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -2075,7 +2251,13 @@
                     "perfil",
                     "desactivar"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Mi Cuenta",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -2085,12 +2267,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Eliminar Mi Cuenta",
-              "request": {
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -2103,18 +2280,9 @@
                     "auth",
                     "perfil"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2124,6 +2292,16 @@
             {
               "name": "Consultar Paquetes",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2136,11 +2314,22 @@
                     "paquetes"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Paquete por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2154,7 +2343,8 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2164,6 +2354,16 @@
             {
               "name": "Consultar Categorias",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2176,11 +2376,22 @@
                     "categorias"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Categoria por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2194,7 +2405,8 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2204,6 +2416,16 @@
             {
               "name": "Consultar Productos (Activos)",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2216,11 +2438,22 @@
                     "productos"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Consultar Producto por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2234,7 +2467,8 @@
                     "1"
                   ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2244,6 +2478,16 @@
             {
               "name": "Mis Solicitudes",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2255,72 +2499,54 @@
                     "api",
                     "personalizado"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mi Solicitud por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Mi Solicitud por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/personalizado/1",
+                  "raw": "{{base_url}}/api/personalizado/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "personalizado",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "3"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Solicitud",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/personalizado",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "personalizado"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombreCompleto\": \"Juan\",\n  \"correo\": \"juan@cliente.com\",\n  \"telefono\": \"300\",\n  \"destinatario\": \"Esposa\",\n  \"descripcionIdea\": \"Arreglo floral gigante\",\n  \"elementosEsenciales\": \"Rosas rojas\",\n  \"prioridadCliente\": \"media\",\n  \"comentariosAdicionales\": \"Ninguno\"\n}",
@@ -2329,25 +2555,61 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/personalizado",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "personalizado"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Mi Solicitud",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prioridadCliente\": \"alta\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/personalizado/1",
+                  "raw": "{{base_url}}/api/personalizado/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "personalizado",
-                    "1"
+                    "3"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cancelar/Eliminar Mi Solicitud",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -2358,20 +2620,6 @@
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"prioridadCliente\": \"alta\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Cancelar/Eliminar Mi Solicitud",
-              "request": {
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -2384,18 +2632,9 @@
                     "personalizado",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2405,6 +2644,16 @@
             {
               "name": "Mis Pedidos",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2416,72 +2665,54 @@
                     "api",
                     "pedidos"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mi Pedido por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Mi Pedido por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/pedidos/1",
+                  "raw": "{{base_url}}/api/pedidos/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "pedidos",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "3"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Pedido",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/pedidos",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "pedidos"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"direccionEnvio\": \"Calle 100 #20-30\",\n  \"telefono\": \"3000000000\",\n  \"notas\": \"Dejar en portería\"\n}",
@@ -2490,25 +2721,61 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/pedidos",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Mi Pedido",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notas\": \"Dejar en apto 201\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/pedidos/1",
+                  "raw": "{{base_url}}/api/pedidos/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "pedidos",
-                    "1"
+                    "3"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cancelar Mi Pedido",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -2519,20 +2786,6 @@
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"notas\": \"Dejar en apto 201\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Cancelar Mi Pedido",
-              "request": {
                 "method": "PATCH",
                 "header": [],
                 "url": {
@@ -2546,18 +2799,9 @@
                     "1",
                     "cancelar"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2567,6 +2811,16 @@
             {
               "name": "Mis Citas",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2578,72 +2832,54 @@
                     "api",
                     "citas"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mi Cita por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Mi Cita por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/citas/1",
+                  "raw": "{{base_url}}/api/citas/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "citas",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "3"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Cita",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/citas",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "citas"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"paqueteId\": 1,\n  \"nombreCompleto\": \"Juan Perez\",\n  \"correo\": \"juan@cliente.com\",\n  \"telefono\": \"300000\",\n  \"tipoEvento\": \"Boda\",\n  \"fechaEvento\": \"2025-05-10\",\n  \"numeroInvitados\": 100,\n  \"informacionAdicional\": \"N/A\"\n}",
@@ -2652,35 +2888,35 @@
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Mi Cita",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/citas/1",
+                  "raw": "{{base_url}}/api/citas",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
-                    "citas",
-                    "1"
+                    "citas"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Mi Cita",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"numeroInvitados\": 120\n}",
@@ -2689,37 +2925,50 @@
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Cancelar Mi Cita",
-              "request": {
-                "method": "PATCH",
-                "header": [],
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/citas/1/cancelar",
+                  "raw": "{{base_url}}/api/citas/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "citas",
-                    "1",
-                    "cancelar"
+                    "3"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cancelar Mi Cita",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/citas/3/cancelar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "citas",
+                    "3",
+                    "cancelar"
+                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2729,6 +2978,16 @@
             {
               "name": "Mis Direcciones",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2740,72 +2999,54 @@
                     "api",
                     "direcciones"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mi Direccion por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Mi Direccion por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/direcciones/1",
+                  "raw": "{{base_url}}/api/direcciones/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "direcciones",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "3"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Direccion",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/direcciones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "direcciones"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombreCompleto\": \"Juan Perez\",\n  \"direccion\": \"Cll 100\",\n  \"departamento\": \"Ant\",\n  \"municipio\": \"Med\",\n  \"barrio\": \"Poblado\",\n  \"telefono\": \"300\",\n  \"tipo\": \"residencial\"\n}",
@@ -2814,25 +3055,61 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/direcciones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "direcciones"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Mi Direccion",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apto\": \"501\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/direcciones/1",
+                  "raw": "{{base_url}}/api/direcciones/3",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "direcciones",
-                    "1"
+                    "3"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Mi Direccion",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -2843,20 +3120,6 @@
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"apto\": \"501\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Eliminar Mi Direccion",
-              "request": {
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -2869,18 +3132,9 @@
                     "direcciones",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -2890,6 +3144,16 @@
             {
               "name": "Mi Carrito",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -2901,109 +3165,91 @@
                     "api",
                     "carrito"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mi Item Carrito por ID",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
-                }
-              }
-            },
-            {
-              "name": "Mi Item Carrito por ID",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/api/carrito/1",
+                  "raw": "{{base_url}}/api/carrito/6",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
                     "carrito",
-                    "1"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
+                    "6"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Agregar al Carrito",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/carrito",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "carrito"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"productoId\": 2,\n  \"cantidad\": 1\n}",
+                  "raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 2\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              }
-            },
-            {
-              "name": "Editar Cantidad Item",
-              "request": {
-                "method": "PUT",
-                "header": [],
+                },
                 "url": {
-                  "raw": "{{base_url}}/api/carrito/1",
+                  "raw": "{{base_url}}/api/carrito",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
-                    "carrito",
-                    "1"
+                    "carrito"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Editar Cantidad Item",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "PUT",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"cantidad\": 2\n}",
@@ -3012,12 +3258,34 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/carrito/6",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "carrito",
+                    "6"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Eliminar Item del Carrito",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -3030,18 +3298,9 @@
                     "carrito",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         },
@@ -3051,6 +3310,16 @@
             {
               "name": "Consultar Opiniones",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -3063,11 +3332,22 @@
                     "opiniones"
                   ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Mi Opinion por ID",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -3080,44 +3360,25 @@
                     "opiniones",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Crear Opinion",
               "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/api/opiniones",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "opiniones"
-                  ]
-                },
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{token}}",
+                      "value": "{{cliente}}",
                       "type": "string"
                     }
                   ]
                 },
+                "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"nombre\": \"Juan\",\n  \"calificacion\": 4,\n  \"comentario\": \"Muy buen servicio\"\n}",
@@ -3126,14 +3387,44 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/opiniones",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "opiniones"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
             {
               "name": "Editar Mi Opinion",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{cliente}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"calificacion\": 5,\n  \"comentario\": \"Excelente servicio\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
                   "raw": "{{base_url}}/api/opiniones/1",
                   "host": [
@@ -3144,7 +3435,13 @@
                     "opiniones",
                     "1"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Eliminar Mi Opinion",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -3155,20 +3452,6 @@
                     }
                   ]
                 },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"calificacion\": 5,\n  \"comentario\": \"Excelente servicio\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "name": "Eliminar Mi Opinion",
-              "request": {
                 "method": "DELETE",
                 "header": [],
                 "url": {
@@ -3181,22 +3464,40 @@
                     "opiniones",
                     "1"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
-              }
+              },
+              "response": []
             }
           ]
         }
       ]
+    }
+  ],
+  "auth": {
+    "type": "bearer"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ],
   "variable": [
@@ -3205,7 +3506,11 @@
       "value": "http://localhost:5000"
     },
     {
-      "key": "token",
+      "key": "admin",
+      "value": ""
+    },
+    {
+      "key": "cliente",
       "value": ""
     }
   ]
