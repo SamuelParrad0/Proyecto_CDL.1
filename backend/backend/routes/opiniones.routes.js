@@ -20,5 +20,6 @@ router.get('/', listarOpiniones);
 router.get('/:id', obtenerOpinionPorId);
 router.post('/', verificarToken, crearOpinion);
 router.put('/:id', verificarToken, editarOpinion);
+router.delete('/:id', verificarToken, eliminarOpinion);
 
 module.exports = router;
