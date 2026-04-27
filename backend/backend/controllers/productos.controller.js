@@ -1,45 +1,39 @@
 const { Producto, Categoria } = require('../models');
 
-// GET /api/productos — Listar productos activos
+// GET /api/productos
 const listarProductos = async (req, res) => {
   try {
     const productos = await Producto.findAll({
       where: { Activo: true },
-      include: [
-        { model: Categoria, as: 'categoria', attributes: ['Id_Categoria', 'Nombre_Categoria'] }
-      ]
+      include: [{ model: Categoria, as: 'categoria', attributes: ['Id_Categoria', 'Nombre_Categoria'] }]
     });
-
-    const data = productos.map(p => ({
-      ...p.toJSON(),
-      imagenUrl: p.obtenerUrlImagen()
-    }));
-
-    res.json(data);
+    res.json(productos.map(p => ({ ...p.toJSON(), imagenUrl: p.obtenerUrlImagen() })));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al obtener productos' });
   }
 };
 
-// GET /api/productos/:id — Ver detalle
+// GET /api/productos/:id
 const verProducto = async (req, res) => {
   try {
     const producto = await Producto.findByPk(req.params.id, {
-      include: [
-        { model: Categoria, as: 'categoria', attributes: ['Id_Categoria', 'Nombre_Categoria'] }
-      ]
+      include: [{ model: Categoria, as: 'categoria', attributes: ['Id_Categoria', 'Nombre_Categoria'] }]
     });
 
-    if (!producto || !producto.Activo) {
+    if (!producto) {
       return res.status(404).json({ mensaje: 'Producto no encontrado' });
     }
 
-    res.json({
-      ...producto.toJSON(),
-      imagenUrl: producto.obtenerUrlImagen()
-    });
+    // Si está desactivado, solo admin puede verlo
+    if (!producto.Activo) {
+      const esAdmin = req.usuarioRol === 'admin';
+      if (!esAdmin) {
+        return res.status(404).json({ mensaje: 'Producto no encontrado' });
+      }
+    }
 
+    res.json({ ...producto.toJSON(), imagenUrl: producto.obtenerUrlImagen() });
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al obtener producto' });
@@ -50,41 +44,22 @@ const verProducto = async (req, res) => {
 const listarPorCategoria = async (req, res) => {
   try {
     const productos = await Producto.findAll({
-      where: {
-        Id_Categoria: req.params.categoriaId,
-        Activo: true
-      }
+      where: { Id_Categoria: req.params.categoriaId, Activo: true }
     });
-
-    const data = productos.map(p => ({
-      ...p.toJSON(),
-      imagenUrl: p.obtenerUrlImagen()
-    }));
-
-    res.json(data);
+    res.json(productos.map(p => ({ ...p.toJSON(), imagenUrl: p.obtenerUrlImagen() })));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al filtrar productos' });
   }
 };
 
-// ───────── ADMIN ─────────
-
 // GET /api/productos/admin/todos
 const listarTodos = async (req, res) => {
   try {
     const productos = await Producto.findAll({
-      include: [
-        { model: Categoria, as: 'categoria', attributes: ['Id_Categoria', 'Nombre_Categoria'] }
-      ]
+      include: [{ model: Categoria, as: 'categoria', attributes: ['Id_Categoria', 'Nombre_Categoria'] }]
     });
-
-    const data = productos.map(p => ({
-      ...p.toJSON(),
-      imagenUrl: p.obtenerUrlImagen()
-    }));
-
-    res.json(data);
+    res.json(productos.map(p => ({ ...p.toJSON(), imagenUrl: p.obtenerUrlImagen() })));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al obtener productos' });
@@ -94,7 +69,7 @@ const listarTodos = async (req, res) => {
 // POST /api/productos/admin
 const crearProducto = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, categoriaId } = req.body;
+    const { nombre, descripcion, precio, categoriaId, stock } = req.body;
     const imagen = req.file ? req.file.filename : null;
 
     const producto = await Producto.create({
@@ -103,14 +78,11 @@ const crearProducto = async (req, res) => {
       Precio_Producto: precio,
       Id_Categoria: categoriaId,
       Imagen_Producto: imagen,
+      Stock: stock || 0,
       Activo: true
     });
 
-    res.status(201).json({
-      mensaje: 'Producto creado correctamente',
-      producto
-    });
-
+    res.status(201).json({ mensaje: 'Producto creado correctamente', producto });
   } catch (error) {
     console.error(error);
     res.status(400).json({ mensaje: error.message });
@@ -121,12 +93,9 @@ const crearProducto = async (req, res) => {
 const editarProducto = async (req, res) => {
   try {
     const producto = await Producto.findByPk(req.params.id);
+    if (!producto) return res.status(404).json({ mensaje: 'Producto no encontrado' });
 
-    if (!producto) {
-      return res.status(404).json({ mensaje: 'Producto no encontrado' });
-    }
-
-    const { nombre, descripcion, precio, categoriaId } = req.body;
+    const { nombre, descripcion, precio, categoriaId, stock } = req.body;
     const imagen = req.file ? req.file.filename : producto.Imagen_Producto;
 
     await producto.update({
@@ -134,14 +103,11 @@ const editarProducto = async (req, res) => {
       Descripcion_Producto: descripcion,
       Precio_Producto: precio,
       Id_Categoria: categoriaId,
-      Imagen_Producto: imagen
+      Imagen_Producto: imagen,
+      Stock: stock ?? producto.Stock
     });
 
-    res.json({
-      mensaje: 'Producto actualizado correctamente',
-      producto
-    });
-
+    res.json({ mensaje: 'Producto actualizado correctamente', producto });
   } catch (error) {
     console.error(error);
     res.status(400).json({ mensaje: error.message });
@@ -152,18 +118,10 @@ const editarProducto = async (req, res) => {
 const activarDesactivar = async (req, res) => {
   try {
     const producto = await Producto.findByPk(req.params.id);
-
-    if (!producto) {
-      return res.status(404).json({ mensaje: 'Producto no encontrado' });
-    }
+    if (!producto) return res.status(404).json({ mensaje: 'Producto no encontrado' });
 
     await producto.update({ Activo: !producto.Activo });
-
-    res.json({
-      mensaje: `Producto ${producto.Activo ? 'activado' : 'desactivado'} correctamente`,
-      producto
-    });
-
+    res.json({ mensaje: `Producto ${producto.Activo ? 'activado' : 'desactivado'}`, producto });
   } catch (error) {
     console.error(error);
     res.status(400).json({ mensaje: error.message });
@@ -174,15 +132,10 @@ const activarDesactivar = async (req, res) => {
 const eliminarProducto = async (req, res) => {
   try {
     const producto = await Producto.findByPk(req.params.id);
-
-    if (!producto) {
-      return res.status(404).json({ mensaje: 'Producto no encontrado' });
-    }
+    if (!producto) return res.status(404).json({ mensaje: 'Producto no encontrado' });
 
     await producto.destroy();
-
     res.json({ mensaje: 'Producto eliminado correctamente' });
-
   } catch (error) {
     console.error(error);
     res.status(400).json({ mensaje: error.message });
@@ -190,12 +143,7 @@ const eliminarProducto = async (req, res) => {
 };
 
 module.exports = {
-  listarProductos,
-  verProducto,
-  listarPorCategoria,
-  listarTodos,
-  crearProducto,
-  editarProducto,
-  activarDesactivar,
-  eliminarProducto
+  listarProductos, verProducto, listarPorCategoria,
+  listarTodos, crearProducto, editarProducto,
+  activarDesactivar, eliminarProducto
 };

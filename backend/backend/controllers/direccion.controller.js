@@ -3,9 +3,7 @@ const { Direccion } = require('../models');
 // GET /api/direcciones
 const obtenerMisDirecciones = async (req, res) => {
   try {
-    const direcciones = await Direccion.findAll({
-      where: { Id_Usuario: req.usuarioId }
-    });
+    const direcciones = await Direccion.findAll({ where: { Id_Usuario: req.usuarioId } });
     res.json({ ok: true, direcciones });
   } catch (error) {
     console.error(error);
@@ -13,21 +11,16 @@ const obtenerMisDirecciones = async (req, res) => {
   }
 };
 
-
 // GET /api/direcciones/:id
 const obtenerDireccionPorId = async (req, res) => {
   try {
     const esAdmin = req.usuarioRol === 'admin';
-
     const where = esAdmin
       ? { Id_Direccion: req.params.id }
       : { Id_Direccion: req.params.id, Id_Usuario: req.usuarioId };
 
     const direccion = await Direccion.findOne({ where });
-
-    if (!direccion) {
-      return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
-    }
+    if (!direccion) return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
 
     res.json({ ok: true, direccion });
   } catch (error) {
@@ -36,94 +29,84 @@ const obtenerDireccionPorId = async (req, res) => {
   }
 };
 
-
 // POST /api/direcciones
 const crearDireccion = async (req, res) => {
   try {
-    const {
-      nombreCompleto, direccion, departamento, municipio,
-      barrio, apto, telefono, indicaciones, tipo
-    } = req.body;
+    const { nombreCompleto, direccion, departamento, municipio, barrio, apto, telefono, indicaciones, tipo } = req.body;
 
     const nuevaDireccion = await Direccion.create({
-      Id_Usuario: req.usuarioId,
-      Nombre_Completo: nombreCompleto,
-      Direccion: direccion,
-      Departamento: departamento,
+      Id_Usuario:          req.usuarioId,
+      Nombre_Completo:     nombreCompleto,
+      Direccion:           direccion,
+      Departamento:        departamento,
       Municipio_Localidad: municipio,
-      Barrio: barrio,
-      Apart_Casa: apto,
-      Telefono: telefono,
-      Indicaciones: indicaciones,
-      Residencia_Laboral: tipo || 'residencial'
+      Barrio:              barrio,
+      Apart_Casa:          apto,
+      Telefono:            telefono,
+      Indicaciones:        indicaciones,
+      Residencia_Laboral:  tipo || 'residencial'
     });
 
-    res.status(201).json({
-      ok: true,
-      mensaje: 'Dirección guardada correctamente',
-      direccion: nuevaDireccion
-    });
+    res.status(201).json({ ok: true, mensaje: 'Dirección guardada correctamente', direccion: nuevaDireccion });
   } catch (error) {
     console.error(error);
     res.status(400).json({ ok: false, mensaje: 'Error al crear la dirección' });
   }
 };
 
-
 // PUT /api/direcciones/:id
 const editarDireccion = async (req, res) => {
   try {
     const esAdmin = req.usuarioRol === 'admin';
-
     const where = esAdmin
       ? { Id_Direccion: req.params.id }
       : { Id_Direccion: req.params.id, Id_Usuario: req.usuarioId };
 
-    const direccion = await Direccion.findOne({ where });
-
-    if (!direccion) {
-      return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
-    }
+    const dir = await Direccion.findOne({ where });
+    if (!dir) return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
 
     const {
-      nombreCompleto, direccionTexto, departamento, municipio,
-      barrio, apto, telefono, indicaciones, tipo
+      nombreCompleto,    Nombre_Completo,
+      direccion,         Direccion: DireccionBody,
+      direccionTexto,
+      departamento,      Departamento,
+      municipio,         Municipio_Localidad,
+      barrio,            Barrio,
+      apto,              Apart_Casa,
+      telefono,          Telefono,
+      indicaciones,      Indicaciones,
+      tipo,              Residencia_Laboral
     } = req.body;
 
-    await direccion.update({
-      Nombre_Completo:    nombreCompleto  ?? direccion.Nombre_Completo,
-      Direccion:          direccionTexto  ?? direccion.Direccion,
-      Departamento:       departamento    ?? direccion.Departamento,
-      Municipio_Localidad: municipio      ?? direccion.Municipio_Localidad,
-      Barrio:             barrio          ?? direccion.Barrio,
-      Apart_Casa:         apto            ?? direccion.Apart_Casa,
-      Telefono:           telefono        ?? direccion.Telefono,
-      Indicaciones:       indicaciones    ?? direccion.Indicaciones,
-      Residencia_Laboral: tipo            ?? direccion.Residencia_Laboral
+    await dir.update({
+      Nombre_Completo:     (nombreCompleto || Nombre_Completo)                       ?? dir.Nombre_Completo,
+      Direccion:           (direccion || DireccionBody || direccionTexto)             ?? dir.Direccion,
+      Departamento:        (departamento || Departamento)                             ?? dir.Departamento,
+      Municipio_Localidad: (municipio || Municipio_Localidad)                        ?? dir.Municipio_Localidad,
+      Barrio:              (barrio || Barrio)                                         ?? dir.Barrio,
+      Apart_Casa:          (apto || Apart_Casa)                                      ?? dir.Apart_Casa,
+      Telefono:            (telefono || Telefono)                                     ?? dir.Telefono,
+      Indicaciones:        (indicaciones || Indicaciones)                             ?? dir.Indicaciones,
+      Residencia_Laboral:  (tipo || Residencia_Laboral)                              ?? dir.Residencia_Laboral
     });
 
-    res.json({ ok: true, mensaje: 'Dirección actualizada', direccion });
+    res.json({ ok: true, mensaje: 'Dirección actualizada', direccion: dir });
   } catch (error) {
     console.error(error);
     res.status(400).json({ ok: false, mensaje: error.message });
   }
 };
 
-
 // PATCH /api/direcciones/:id/toggle
 const toggleDireccion = async (req, res) => {
   try {
     const esAdmin = req.usuarioRol === 'admin';
-
     const where = esAdmin
       ? { Id_Direccion: req.params.id }
       : { Id_Direccion: req.params.id, Id_Usuario: req.usuarioId };
 
     const direccion = await Direccion.findOne({ where });
-
-    if (!direccion) {
-      return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
-    }
+    if (!direccion) return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
 
     res.json({ ok: true, mensaje: 'Estado actualizado', direccion });
   } catch (error) {
@@ -132,21 +115,16 @@ const toggleDireccion = async (req, res) => {
   }
 };
 
-
 // DELETE /api/direcciones/:id
 const eliminarDireccion = async (req, res) => {
   try {
     const esAdmin = req.usuarioRol === 'admin';
-
     const where = esAdmin
       ? { Id_Direccion: req.params.id }
       : { Id_Direccion: req.params.id, Id_Usuario: req.usuarioId };
 
     const direccion = await Direccion.findOne({ where });
-
-    if (!direccion) {
-      return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
-    }
+    if (!direccion) return res.status(404).json({ ok: false, mensaje: 'Dirección no encontrada' });
 
     await direccion.destroy();
     res.json({ ok: true, mensaje: 'Dirección eliminada correctamente' });
@@ -156,12 +134,7 @@ const eliminarDireccion = async (req, res) => {
   }
 };
 
-
 module.exports = {
-  obtenerMisDirecciones,
-  obtenerDireccionPorId,
-  crearDireccion,
-  editarDireccion,
-  toggleDireccion,
-  eliminarDireccion
+  obtenerMisDirecciones, obtenerDireccionPorId,
+  crearDireccion, editarDireccion, toggleDireccion, eliminarDireccion
 };

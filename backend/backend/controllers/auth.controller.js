@@ -271,14 +271,28 @@ const eliminarUsuario = async (req, res) => {
       return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
     }
 
+    const { Personalizado, ReservaPaquete, Carrito, Direccion, Pedido, DetallePedido } = require('../models');
+    const id = req.params.id;
+
+    // Eliminar datos relacionados primero
+    await Carrito.destroy({ where: { Id_Usuario: id } });
+    await Direccion.destroy({ where: { Id_Usuario: id } });
+    await Personalizado.destroy({ where: { Id_Usuario: id } });
+    await ReservaPaquete.destroy({ where: { Id_Usuario: id } });
+
+    // Pedidos — primero detalles, luego pedidos
+    const pedidos = await Pedido.findAll({ where: { usuarioId: id } });
+    for (const pedido of pedidos) {
+      await DetallePedido.destroy({ where: { pedidoId: pedido.id } });
+    }
+    await Pedido.destroy({ where: { usuarioId: id } });
+
     await usuario.destroy();
 
-    res.json({
-      ok: true,
-      mensaje: 'Usuario eliminado correctamente'
-    });
+    res.json({ ok: true, mensaje: 'Usuario eliminado correctamente' });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ ok: false, mensaje: 'Error al eliminar usuario' });
   }
 };

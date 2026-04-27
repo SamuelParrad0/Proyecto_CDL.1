@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const { testConnection, syncDatabase } = require('./config/database');
 const { initAssociations } = require('./models');
+const { normalizarBody } = require('./middleware/normalizarBody');
 
 const app = express();
 
@@ -16,10 +17,13 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Normalizar body — acepta tanto camelCase como PascalCase
+app.use(normalizarBody);
+
 // Archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-/// Rutas
+// Rutas
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
@@ -70,7 +74,6 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-
 const seedDatabase = require('./utils/seeder');
 
 const iniciarServidor = async () => {
@@ -82,13 +85,11 @@ const iniciarServidor = async () => {
     process.exit(1);
   }
 
-  // Activar datos iniciales
   await seedDatabase();
 
   app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
   });
 };
-
 
 iniciarServidor();

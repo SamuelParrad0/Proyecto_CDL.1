@@ -13,18 +13,25 @@ const {
   eliminarProducto
 } = require('../controllers/productos.controller');
 
-// Rutas de admin — van ANTES de /:id para que Express no las confunda
+// Middleware opcional — intenta verificar token pero no bloquea si no hay
+const verificarTokenOpcional = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return next();
+  return verificarToken(req, res, next);
+};
+
+// ── ADMIN ──────────────────────────────────────────────
 router.get('/admin/todos', verificarToken, esAdministrador, listarTodos);
 router.post('/admin', verificarToken, esAdministrador, crearProducto);
 router.put('/admin/:id', verificarToken, esAdministrador, editarProducto);
 router.patch('/admin/:id/activar', verificarToken, esAdministrador, activarDesactivar);
 router.delete('/admin/:id', verificarToken, esAdministrador, eliminarProducto);
 
-// Rutas públicas
+// ── PÚBLICAS ───────────────────────────────────────────
 router.get('/', listarProductos);
 router.get('/categoria/:categoriaId', listarPorCategoria);
 
-// Ruta pública con parámetro — va AL FINAL
-router.get('/:id', verProducto);
+// Token opcional para que admin pueda ver productos desactivados
+router.get('/:id', verificarTokenOpcional, verProducto);
 
 module.exports = router;

@@ -19,6 +19,10 @@ const Opinion = sequelize.define('Opinion', {
   Comentario: {
     type: DataTypes.TEXT,
     allowNull: false
+  },
+  Id_Usuario: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   }
 }, {
   tableName: 'reseñas',
